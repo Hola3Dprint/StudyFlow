@@ -48,7 +48,6 @@ export function Sidebar({ view, setView, courses, sync, collapsed, onToggle }: S
       {syncing ? <p className="sync-current-file">{sync?.progress.transfers?.filter(file => file.status === "downloading").map(file => file.name).join(" · ") || sync?.progress.message}</p> : null}
       <div className="sync-course-list">{courses.slice(0, 5).map(course => <SyncStatus key={course.id} course={course} sync={sync} />)}</div>
     </section>
-    <section className="theme-picker rainbow-only" aria-label="Appearance"><span className="theme-picker-label">Appearance</span><strong>Rainbow</strong></section>
     <button className="bottom-collapse" onClick={onToggle} aria-label="Collapse sidebar"><ChevronDoubleLeftRegular /></button>
   </aside>;
 }

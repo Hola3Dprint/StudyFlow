@@ -23,7 +23,7 @@ let services: AppServices | null = null;
 
 // Keep credentials and settings in the same location for batch, portable and
 // installed launches, independent of Electron's inferred application name.
-app.setPath("userData", path.join(app.getPath("appData"), "studyflow-rainbow"));
+app.setPath("userData", path.join(app.getPath("appData"), "studyflow-desktop"));
 
 class AppServices {
   readonly database: StudyFlowDatabase;
@@ -39,7 +39,7 @@ class AppServices {
 
   constructor() {
     const appData = app.getPath("userData");
-    this.libraryPath = path.join(app.getPath("documents"), "StudyFlow Rainbow");
+    this.libraryPath = path.join(app.getPath("documents"), "StudyFlow Desktop");
     this.tokenFile = path.join(appData, "canvas-token.dpapi");
     this.database = new StudyFlowDatabase(path.join(appData, "studyflow.sqlite"));
     this.database.recoverInterruptedSyncs();
@@ -284,7 +284,7 @@ async function createWindow(): Promise<void> {
     minWidth: 1180,
     minHeight: 760,
     backgroundColor: windowBackgroundFor(appearanceTheme),
-    title: "StudyFlow Rainbow",
+    title: "StudyFlow",
     show: false,
     webPreferences: {
       contextIsolation: true,
@@ -344,7 +344,7 @@ function startAutomaticUpdates(): void {
 const primaryInstance = app.requestSingleInstanceLock();
 if (!primaryInstance) app.quit();
 else app.whenReady().then(async () => {
-  app.setAppUserModelId("com.studyflow.desktop.rainbow");
+  app.setAppUserModelId("com.studyflow.desktop.companion");
   session.defaultSession.setPermissionRequestHandler((_webContents, _permission, callback) => callback(false));
   services = new AppServices();
   await services.prepare();

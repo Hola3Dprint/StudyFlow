@@ -4,7 +4,7 @@ StudyFlow is a local-first Windows desktop companion for Canvas. It mirrors the 
 
 ## Install
 
-Download `StudyFlow-Setup-*.exe` from the [latest GitHub Release](https://github.com/Hola3Dprint/StudyFlow/releases/latest), run it, and choose an installation location. The installer creates Start Menu and desktop shortcuts.
+Download `StudyFlow-Desktop-Setup-*.exe` from the [latest GitHub Release](https://github.com/Hola3Dprint/StudyFlow/releases/latest), run it, and choose an installation location. The installer creates Start Menu and desktop shortcuts.
 
 The installed app checks GitHub Releases in the background. When a later version is available, it downloads it and offers to restart; otherwise it installs automatically when StudyFlow closes.
 
