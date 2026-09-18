@@ -11,7 +11,7 @@
     "build": "tsc -b && vite build && pnpm build:electron",
     "build:electron": "tsup electron/main.ts electron/library-worker.ts --format esm --platform node --target node22 --out-dir dist-electron --external electron --external better-sqlite3 --sourcemap && tsup electron/preload.ts --format cjs --platform node --target node22 --out-dir dist-electron --external electron --sourcemap",
     "typecheck": "tsc -b --pretty false",
-    "package": "pnpm build && pnpm rebuild:electron && electron-builder --win nsis",
+    "package": "pnpm build && pnpm rebuild:electron && electron-builder --win nsis --publish never",
     "package:dir": "pnpm build && pnpm rebuild:electron && electron-builder --dir",
     "rebuild:electron": "electron-builder install-app-deps"
   },
