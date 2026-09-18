@@ -1,5 +1,5 @@
 import { app, BrowserWindow, ipcMain, safeStorage, shell, session, dialog, powerMonitor, nativeTheme } from "electron";
-import { autoUpdater } from "electron-updater";
+import electronUpdater from "electron-updater";
 import path from "node:path";
 import { randomUUID } from "node:crypto";
 import { existsSync, readFileSync, writeFileSync, renameSync, rmSync } from "node:fs";
@@ -17,6 +17,8 @@ import { AppleCalendarService } from "./services/apple-calendar";
 import { StartupRefresh } from "./services/startup-refresh";
 import type { AppleCredentials } from "./services/apple-calendar-provider";
 import { APPEARANCE_THEMES, nativeAppearanceFor, windowBackgroundFor, type AppearanceTheme } from "../shared/appearance";
+
+const { autoUpdater } = electronUpdater;
 
 let mainWindow: BrowserWindow | null = null;
 let services: AppServices | null = null;

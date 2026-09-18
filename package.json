@@ -1,6 +1,6 @@
 {
   "name": "studyflow",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "private": true,
   "description": "Local-first Canvas course mirror and Codex-powered assignment workspace",
   "author": "StudyFlow",
