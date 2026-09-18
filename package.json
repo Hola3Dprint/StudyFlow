@@ -1,0 +1,106 @@
+{
+  "name": "studyflow",
+  "version": "0.2.0",
+  "private": true,
+  "description": "Local-first Canvas course mirror and Codex-powered assignment workspace",
+  "author": "StudyFlow",
+  "license": "PolyForm-Noncommercial-1.0.0",
+  "type": "module",
+  "main": "dist-electron/main.js",
+  "scripts": {
+    "build": "tsc -b && vite build && pnpm build:electron",
+    "build:electron": "tsup electron/main.ts electron/library-worker.ts --format esm --platform node --target node22 --out-dir dist-electron --external electron --external better-sqlite3 --sourcemap && tsup electron/preload.ts --format cjs --platform node --target node22 --out-dir dist-electron --external electron --sourcemap",
+    "typecheck": "tsc -b --pretty false",
+    "package": "pnpm build && pnpm rebuild:electron && electron-builder --win nsis",
+    "package:dir": "pnpm build && pnpm rebuild:electron && electron-builder --dir",
+    "rebuild:electron": "electron-builder install-app-deps"
+  },
+  "dependencies": {
+    "@fluentui/react-components": "^9.72.3",
+    "@fluentui/react-icons": "^2.0.320",
+    "@huggingface/transformers": "3.8.1",
+    "@napi-rs/canvas": "1.0.9",
+    "@openai/codex": "0.154.0",
+    "@tesseract.js-data/eng": "1.0.0",
+    "better-sqlite3": "^12.2.0",
+    "date-fns": "^4.1.0",
+    "docx": "^9.5.1",
+    "electron-updater": "6.6.2",
+    "exceljs": "^4.4.0",
+    "ical.js": "^2.2.1",
+    "jszip": "^3.10.1",
+    "marked": "^16.2.1",
+    "mathjax-full": "3.2.2",
+    "mathjs": "^15.2.0",
+    "mathml2omml": "0.5.0",
+    "pdfjs-dist": "^6.3.289",
+    "pdfkit": "^0.17.2",
+    "pptxgenjs": "^4.0.1",
+    "react": "^19.1.1",
+    "react-dom": "^19.1.1",
+    "sanitize-html": "^2.17.0",
+    "svg-to-pdfkit": "0.1.8",
+    "tesseract.js": "6.0.1",
+    "tsdav": "^2.3.3",
+    "turndown": "^7.2.1",
+    "zod": "^4.1.5"
+  },
+  "devDependencies": {
+    "@types/better-sqlite3": "^7.6.13",
+    "@types/node": "^24.3.0",
+    "@types/pdfkit": "^0.17.2",
+    "@types/react": "^19.1.12",
+    "@types/react-dom": "^19.1.9",
+    "@types/sanitize-html": "^2.16.0",
+    "@types/svg-to-pdfkit": "0.1.4",
+    "@types/turndown": "^5.0.6",
+    "@vitejs/plugin-react": "^5.0.2",
+    "electron": "^37.4.0",
+    "electron-builder": "^26.0.12",
+    "tsup": "^8.5.0",
+    "typescript": "~5.9.2",
+    "vite": "^7.1.3"
+  },
+  "build": {
+    "appId": "com.studyflow.desktop",
+    "productName": "StudyFlow",
+    "asar": true,
+    "asarUnpack": [
+      "node_modules/better-sqlite3/**/*",
+      "node_modules/onnxruntime-node/**/*",
+      "node_modules/@tesseract.js-data/**/*",
+      "node_modules/tesseract.js/**/*",
+      "node_modules/tesseract.js-core/**/*",
+      "node_modules/@openai/codex/**/*",
+      "node_modules/@openai/codex-win32-x64/**/*"
+    ],
+    "files": [
+      "dist/**/*",
+      "dist-electron/**/*",
+      "package.json"
+    ],
+    "directories": {
+      "output": "release"
+    },
+    "publish": [
+      {
+        "provider": "github",
+        "owner": "Hola3Dprint",
+        "repo": "StudyFlow",
+        "releaseType": "release"
+      }
+    ],
+    "win": {
+      "target": "nsis"
+    },
+    "nsis": {
+      "artifactName": "StudyFlow-Setup-${version}-${arch}.${ext}",
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "deleteAppDataOnUninstall": false,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "license": "LICENSE"
+    }
+  }
+}
