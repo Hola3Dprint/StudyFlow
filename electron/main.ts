@@ -23,7 +23,7 @@ let services: AppServices | null = null;
 
 // Keep credentials and settings in the same location for batch, portable and
 // installed launches, independent of Electron's inferred application name.
-app.setPath("userData", path.join(app.getPath("appData"), "studyflow"));
+app.setPath("userData", path.join(app.getPath("appData"), "studyflow-rainbow"));
 
 class AppServices {
   readonly database: StudyFlowDatabase;
@@ -39,7 +39,7 @@ class AppServices {
 
   constructor() {
     const appData = app.getPath("userData");
-    this.libraryPath = path.join(app.getPath("documents"), "StudyFlow");
+    this.libraryPath = path.join(app.getPath("documents"), "StudyFlow Rainbow");
     this.tokenFile = path.join(appData, "canvas-token.dpapi");
     this.database = new StudyFlowDatabase(path.join(appData, "studyflow.sqlite"));
     this.database.recoverInterruptedSyncs();
@@ -154,8 +154,7 @@ const pathSchema = z.string().min(1).max(32_000);
 const appearanceThemeSchema = z.enum(APPEARANCE_THEMES);
 
 function savedAppearanceTheme(): AppearanceTheme {
-  const saved = services?.database.getSetting("appearance.theme");
-  return appearanceThemeSchema.safeParse(saved).data ?? "light";
+  return "rainbow";
 }
 
 function applyNativeAppearance(theme: AppearanceTheme): void {
@@ -185,7 +184,8 @@ function isLibraryPath(value: string): boolean {
 
 function registerIpc(): void {
   ipcMain.handle("studyflow:appearance:set-theme", (_event, input: unknown) => {
-    const theme = appearanceThemeSchema.parse(input);
+    appearanceThemeSchema.parse(input);
+    const theme: AppearanceTheme = "rainbow";
     getServices().database.setSetting("appearance.theme", theme);
     applyNativeAppearance(theme);
   });
@@ -284,7 +284,7 @@ async function createWindow(): Promise<void> {
     minWidth: 1180,
     minHeight: 760,
     backgroundColor: windowBackgroundFor(appearanceTheme),
-    title: "StudyFlow",
+    title: "StudyFlow Rainbow",
     show: false,
     webPreferences: {
       contextIsolation: true,
@@ -344,7 +344,7 @@ function startAutomaticUpdates(): void {
 const primaryInstance = app.requestSingleInstanceLock();
 if (!primaryInstance) app.quit();
 else app.whenReady().then(async () => {
-  app.setAppUserModelId("com.studyflow.desktop");
+  app.setAppUserModelId("com.studyflow.desktop.rainbow");
   session.defaultSession.setPermissionRequestHandler((_webContents, _permission, callback) => callback(false));
   services = new AppServices();
   await services.prepare();

@@ -1,6 +1,6 @@
 {
-  "name": "studyflow",
-  "version": "0.2.0",
+  "name": "studyflow-rainbow",
+  "version": "0.2.0-rainbow.0",
   "private": true,
   "description": "Local-first Canvas course mirror and Codex-powered assignment workspace",
   "author": "StudyFlow",
@@ -62,8 +62,8 @@
     "vite": "^7.1.3"
   },
   "build": {
-    "appId": "com.studyflow.desktop",
-    "productName": "StudyFlow",
+    "appId": "com.studyflow.desktop.rainbow",
+    "productName": "StudyFlow Rainbow",
     "asar": true,
     "asarUnpack": [
       "node_modules/better-sqlite3/**/*",
@@ -87,14 +87,15 @@
         "provider": "github",
         "owner": "Hola3Dprint",
         "repo": "StudyFlow",
-        "releaseType": "release"
+        "releaseType": "release",
+        "channel": "rainbow"
       }
     ],
     "win": {
       "target": "nsis"
     },
     "nsis": {
-      "artifactName": "StudyFlow-Setup-${version}-${arch}.${ext}",
+      "artifactName": "StudyFlow-Rainbow-Setup-${version}-${arch}.${ext}",
       "oneClick": false,
       "allowToChangeInstallationDirectory": true,
       "deleteAppDataOnUninstall": false,

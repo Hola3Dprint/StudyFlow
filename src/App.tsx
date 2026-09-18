@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useRef, useState, type ReactElement } from "react";
-import { FluentProvider, webDarkTheme, webLightTheme } from "@fluentui/react-components";
+import { FluentProvider, webLightTheme } from "@fluentui/react-components";
 import type { AiRun, AppBootstrap, Assignment, CanvasConnection, CanvasConnectResult, CodexAccount, Course, SyncJob, SyncSelection } from "../shared/types";
 import { AssignmentDrawer } from "./components/AssignmentDrawer";
 import { CalendarView } from "./components/CalendarView";
@@ -17,8 +17,7 @@ const api = window.studyflow ?? mockApi;
 const THEME_STORAGE_KEY = "studyflow-color-theme";
 
 function getSavedTheme(): AppTheme {
-  const saved = window.localStorage.getItem(THEME_STORAGE_KEY);
-  return saved === "dark" || saved === "rainbow" ? saved : "light";
+  return "rainbow";
 }
 
 function InitialLoading(): ReactElement {
@@ -29,7 +28,7 @@ function DesktopBridgeUnavailable({ theme }: { theme: AppTheme }): ReactElement 
   return <main className="desktop-bridge-error" data-theme={theme} role="alert"><span className="startup-logo">StudyFlow</span><h1>Desktop service unavailable</h1><p>StudyFlow could not connect to its local Canvas service, so no demo courses are shown. Close this window and start the app with <strong>Run-StudyFlow.bat</strong>.</p></main>;
 }
 
-function StudyFlowApp({ theme, onThemeChange }: { theme: AppTheme; onThemeChange: (theme: AppTheme) => void }): ReactElement {
+function StudyFlowApp({ theme }: { theme: AppTheme }): ReactElement {
   const [bootstrap, setBootstrap] = useState<AppBootstrap | null>(null);
   const [view, setView] = useState<AppView>("calendar");
   const [month, setMonth] = useState(() => new Date());
@@ -114,7 +113,7 @@ function StudyFlowApp({ theme, onThemeChange }: { theme: AppTheme; onThemeChange
   else content = <CalendarView appleApi={api.appleCalendar} appleState={appleCalendar} month={month} onChangeMonth={setMonth} assignments={assignments} courses={courses} selectedAssignmentId={selectedId} onSelectAssignment={selectAssignment} onOpenSync={() => setSyncDialogOpen(true)} search={search} setSearch={setSearch} sync={sync} onLibrarySearch={()=>setView("library")} />;
   if (!bootstrap && isDesktopRenderer) return <InitialLoading />;
   return <div className={`app-shell ${sidebarCollapsed ? "shell-collapsed" : ""} ${drawerOpen && selected ? "drawer-visible" : "drawer-hidden"}`} data-theme={theme}>
-    <Sidebar view={view} setView={setView} courses={courses} sync={sync} collapsed={sidebarCollapsed} onToggle={() => setSidebarCollapsed((current) => !current)} theme={theme} onThemeChange={onThemeChange} />
+    <Sidebar view={view} setView={setView} courses={courses} sync={sync} collapsed={sidebarCollapsed} onToggle={() => setSidebarCollapsed((current) => !current)} />
     {content}
     {view === "calendar" ? <AssignmentDrawer api={api} assignment={drawerOpen ? selected : null} onClose={() => setDrawerOpen(false)} onOpenMaterials={openMaterials} onStartAi={startAi} onCheckSubmission={checkSubmission} onMarkProgress={markProgress} /> : <aside className="screen-side-rail" />}
     {syncDialogOpen ? <SyncDialog loadCourses={api.canvas.listCourses} onCoursesLoaded={applyFavoriteCourses} onOpenSettings={() => { setSyncDialogOpen(false); setView("settings"); }} onClose={() => setSyncDialogOpen(false)} onConfirm={beginSync} /> : null}
@@ -123,15 +122,15 @@ function StudyFlowApp({ theme, onThemeChange }: { theme: AppTheme; onThemeChange
 }
 
 export default function App(): ReactElement {
-  const [theme, setTheme] = useState<AppTheme>(getSavedTheme);
+  const theme = getSavedTheme();
   useEffect(() => {
     window.localStorage.setItem(THEME_STORAGE_KEY, theme);
     document.documentElement.dataset.theme = theme;
-    document.documentElement.style.colorScheme = theme === "dark" ? "dark" : "light";
+    document.documentElement.style.colorScheme = "light";
     void api.appearance?.setTheme(theme);
   }, [theme]);
 
-  return <FluentProvider theme={theme === "dark" ? webDarkTheme : webLightTheme}>
-    {isDesktopRenderer && !window.studyflow ? <DesktopBridgeUnavailable theme={theme} /> : <StudyFlowApp theme={theme} onThemeChange={setTheme} />}
+  return <FluentProvider theme={webLightTheme}>
+    {isDesktopRenderer && !window.studyflow ? <DesktopBridgeUnavailable theme={theme} /> : <StudyFlowApp theme={theme} />}
   </FluentProvider>;
 }
